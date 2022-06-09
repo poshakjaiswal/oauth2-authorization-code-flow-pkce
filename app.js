@@ -43,11 +43,13 @@ app.get('/get/the/code', (req, res) => {
 
     log.info(req.session.code_challenge);
 
-    const Authorization_Endpoint = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/authorize`;
+    //const Authorization_Endpoint = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/authorize`;
+    const Authorization_Endpoint = "http://localhost:4444/oauth2/auth";
     const Response_Type = 'code';
     const Client_Id = process.env.CLIENT_ID;
     const Redirect_Uri = 'http://localhost:8000/give/me/the/code';
-    const Scope = 'https://graph.microsoft.com/User.Read';
+    //const Scope = 'https://graph.microsoft.com/User.Read';
+    const Scope = 'offline users.write users.read users.edit users.delete';
     const State = 'ThisIsMyStateValue';
     const Code_Challenge = req.session.code_challenge;
 
@@ -68,13 +70,14 @@ app.get('/give/me/the/code', (req, res) => {
 //Step 3: Exchange the code for a token
 app.post('/exchange/the/code/for/a/token', (req, res) => {
 
-    const Token_Endpoint = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
+    //const Token_Endpoint = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/v2.0/token`;
+    const Token_Endpoint = "http://localhost:4444/oauth2/token";
     const Grant_Type = 'authorization_code';
     const Code = req.body.code;
     const Redirect_Uri = 'http://localhost:8000/give/me/the/code';
     const Client_Id = process.env.CLIENT_ID;
     const Client_Secret = process.env.CLIENT_SECRET;
-    const Scope = 'https://graph.microsoft.com/User.Read';
+    const Scope = 'offline users.write users.read users.edit users.delete';
     const Code_Verifier = req.session.code_verifier;
 
     log.info(Code_Verifier);
@@ -119,4 +122,4 @@ app.post('/call/ms/graph', (req, res) => {
     });
 });
 
-app.listen(8000);
+app.listen(8030);
