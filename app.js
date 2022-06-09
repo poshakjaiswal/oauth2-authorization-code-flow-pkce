@@ -47,13 +47,17 @@ app.get('/get/the/code', (req, res) => {
     const Authorization_Endpoint = "http://localhost:4444/oauth2/auth";
     const Response_Type = 'code';
     const Client_Id = process.env.CLIENT_ID;
-    const Redirect_Uri = 'http://localhost:8000/give/me/the/code';
+    const Redirect_Uri = 'http://localhost:1234/callbacks';
     //const Scope = 'https://graph.microsoft.com/User.Read';
-    const Scope = 'offline users.write users.read users.edit users.delete';
+    const Scope = 'users.write+users.read+users.edit+users.delete+offline';
     const State = 'ThisIsMyStateValue';
     const Code_Challenge = req.session.code_challenge;
 
-    let url = `${Authorization_Endpoint}?response_type=${Response_Type}&client_id=${Client_Id}&code_challenge=${Code_Challenge}&code_challenge_method=S256&redirect_uri=${Redirect_Uri}&scope=${Scope}&state=${State}`;
+    //http://localhost:4444/oauth2/auth?client_id=myclient&prompt=consent&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=users.write+users.read+users.edit&state=XfFcFf7KL7ajzA2nBY%2F8%2FX3lVzZ6VZ0q7a8rM3kOfMM%3D
+
+   // http://localhost:4444/oauth2/auth?client_id=poshak&redirect_uri=http%3A%2F%2Flocalhost%3A1234%2Fcallbacks&response_type=code&scope=users.write+users.read+users.edit+users.delete+offline&state=4ZlTumSS1Oe3Vi6EtixWz0%2FYVl26HZJj1NGTu1nkffQ%3D
+
+    let url = `${Authorization_Endpoint}?client_id=${Client_Id}&prompt=consent&redirect_uri=${Redirect_Uri}&response_type=code&scope=${Scope}&state=${State}`;
 
     log.info(url);
 
@@ -75,14 +79,14 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     const Grant_Type = 'authorization_code';
     const Code = req.body.code;
     const Redirect_Uri = 'http://localhost:8000/give/me/the/code';
-    const Client_Id = process.env.CLIENT_ID;
-    const Client_Secret = process.env.CLIENT_SECRET;
+    //const Client_Id = process.env.CLIENT_ID;
+    //const Client_Secret = process.env.CLIENT_SECRET;
     const Scope = 'offline users.write users.read users.edit users.delete';
-    const Code_Verifier = req.session.code_verifier;
+    //const Code_Verifier = req.session.code_verifier;
 
-    log.info(Code_Verifier);
+   // log.info(Code_Verifier);
 
-    let body = `grant_type=${Grant_Type}&code=${Code}&redirect_uri=${encodeURIComponent(Redirect_Uri)}&client_id=${Client_Id}&client_secret=${Client_Secret}&code_verifier=${Code_Verifier}&scope=${encodeURIComponent(Scope)}`;
+    let body = `grant_type=${Grant_Type}&code=${Code}&redirect_uri=${encodeURIComponent(Redirect_Uri)}&code_verifier=${Code_Verifier}&scope=${encodeURIComponent(Scope)}`;
 
     log.info(`Body: ${body}`);
 

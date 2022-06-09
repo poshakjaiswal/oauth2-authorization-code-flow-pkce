@@ -14,8 +14,8 @@
             "program": "${workspaceFolder}/app.js",
             "env": {
                 "NODE_ENV": "development",
-                "CLIENT_ID": "newClient3",
-                "CLIENT_SECRET": "mysecret" 
+                "CLIENT_ID": "poshak",
+                "CLIENT_SECRET": "poshak_secret" 
             }
         }
     ]
