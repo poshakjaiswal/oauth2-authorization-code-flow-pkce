@@ -47,7 +47,8 @@ app.get('/get/the/code', (req, res) => {
     const Authorization_Endpoint = "http://localhost:4444/oauth2/auth";
     const Response_Type = 'code';
     const Client_Id = process.env.CLIENT_ID;
-    const Redirect_Uri = 'http://localhost:1234/callbacks';
+    //const Redirect_Uri = 'http://localhost:1234/callbacks';
+    const Redirect_Uri = 'http://localhost:8030/give/me/the/code';
     //const Scope = 'https://graph.microsoft.com/User.Read';
     const Scope = 'users.write+users.read+users.edit+users.delete+offline';
     const State = 'ThisIsMyStateValue';
@@ -78,24 +79,38 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     const Token_Endpoint = "http://localhost:4444/oauth2/token";
     const Grant_Type = 'authorization_code';
     const Code = req.body.code;
-    const Redirect_Uri = 'http://localhost:8000/give/me/the/code';
+    const Client_Id = process.env.CLIENT_ID;
+    const Redirect_Uri = 'http://localhost:8030/give/me/the/code';
     //const Client_Id = process.env.CLIENT_ID;
     //const Client_Secret = process.env.CLIENT_SECRET;
-    const Scope = 'offline users.write users.read users.edit users.delete';
+    const Scope = 'users.write+users.read+users.edit+users.delete+offline';
     //const Code_Verifier = req.session.code_verifier;
 
    // log.info(Code_Verifier);
 
-    let body = `grant_type=${Grant_Type}&code=${Code}&redirect_uri=${encodeURIComponent(Redirect_Uri)}&code_verifier=${Code_Verifier}&scope=${encodeURIComponent(Scope)}`;
+    let body = `grant_type=${Grant_Type}&client_id=${Client_Id}&code=${Code}&redirect_uri=${encodeURIComponent(Redirect_Uri)}`;
+
+    //let body = `${Authorization_Endpoint}?grant_type=${Grant_Type}?client_id=${Client_Id}&prompt=consent&redirect_uri=${Redirect_Uri}&response_type=code&scope=${Scope}&state=${State}`;
 
     log.info(`Body: ${body}`);
 
+    ///////
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("grant_type", Grant_Type);
+    urlencoded.append("code", Code);
+    //urlencoded.append("refresh_token", "velit dolor anim laborum incididunt");
+    urlencoded.append("redirect_uri",Redirect_Uri);
+    urlencoded.append("client_id", Client_Id);
+
+    /////////
+
     fetch(Token_Endpoint, {
         method: 'POST',
-        body: body,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+        headers: myHeaders,
+        body: urlencoded,
     }).then(async response => {
 
         let json = await response.json();
@@ -104,6 +119,22 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     }).catch(error => {
         log.error(error.message);
     });
+
+
+    // fetch(Token_Endpoint, {
+    //     method: 'POST',
+    //     body: body,
+    //     headers: {
+    //         'Content-Type': 'application/x-www-form-urlencoded'
+    //     }
+    // }).then(async response => {
+
+    //     let json = await response.json();
+    //     res.render('access-token', { token: JSON.stringify(json, undefined, 2) }); //you shouldn't share the access token with the client-side
+
+    // }).catch(error => {
+    //     log.error(error.message);
+    // });
 });
 
 //Step 4: Call the protected API
