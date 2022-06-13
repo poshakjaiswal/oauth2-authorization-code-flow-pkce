@@ -95,8 +95,8 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     log.info(`Body: ${body}`);
 
     ///////
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    //var myHeaders = new Headers();
+    //myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
     var urlencoded = new URLSearchParams();
     urlencoded.append("grant_type", Grant_Type);
@@ -109,7 +109,9 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
 
     fetch(Token_Endpoint, {
         method: 'POST',
-        headers: myHeaders,
+        headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
         body: urlencoded,
     }).then(async response => {
 
