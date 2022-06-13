@@ -80,6 +80,8 @@ app.get('/', (req, res) => {
 //Set 1: Ask the authorization code
 app.get('/get/the/code', (req, res) => {
 
+    passport.authenticate('oauth2', { failureRedirect: '/login' })
+
     log.info(req.session.code_challenge);
 
     //const Authorization_Endpoint = `https://login.microsoftonline.com/${process.env.TENANT_ID}/oauth2/authorize`;
@@ -121,7 +123,7 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     const Client_Id = process.env.CLIENT_ID;
     const Redirect_Uri = 'http://localhost:8030/give/me/the/code';
     //const Client_Id = process.env.CLIENT_ID;
-    //const Client_Secret = process.env.CLIENT_SECRET;
+    const Client_Secret = process.env.CLIENT_SECRET;
     const Scope = 'users.write+users.read+users.edit+users.delete+offline';
     //const Code_Verifier = req.session.code_verifier;
 
@@ -143,6 +145,7 @@ app.post('/exchange/the/code/for/a/token', (req, res) => {
     //urlencoded.append("refresh_token", "velit dolor anim laborum incididunt");
     urlencoded.append("redirect_uri",Redirect_Uri);
     urlencoded.append("client_id", Client_Id);
+    urlencoded.append("client_secret", Client_Secret);
 
     /////////
 
