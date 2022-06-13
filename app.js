@@ -6,15 +6,37 @@ const express = require('express'),
     fetch = require("node-fetch"),
     crypto = require('crypto');
 
+const passport = require('passport');    
+
+require('./lib/passport');    
+
+
 
 //Load values from .env file
 require('dotenv').config();
 
+exports.initialize = function() {
+    return passport.initialize();
+  };
+  
+
+
+
+
 const app = express();
 const log = bunyan.createLogger({ name: 'Authorization Code Flow' });
 
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(express.static('public'));
-app.use(session({ secret: 'ssshhhhh' }));
+// app.use(session({ secret: 'ssshhhhh' }));
+app.use(session({
+    secret: 'emr',
+    accessToken:'',
+    cookie: { path: '/', secure: false, maxAge: null }
+  }))
+  
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -27,6 +49,21 @@ function base64URLEncode(str) {
         .replace(/\//g, '_')
         .replace(/=/g, '');
 }
+
+
+
+app.get('/auth/example',
+  passport.authenticate('oauth2'));
+
+app.get('/auth/example/callback',
+  passport.authenticate('oauth2', { failureRedirect: '/login' }),
+  function(req, res) {
+      console.log(req);
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
+
 
 app.get('/', (req, res) => {
 
