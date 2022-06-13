@@ -26,8 +26,6 @@ exports.initialize = function() {
 const app = express();
 const log = bunyan.createLogger({ name: 'Authorization Code Flow' });
 
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use(express.static('public'));
 // app.use(session({ secret: 'ssshhhhh' }));
@@ -40,6 +38,10 @@ app.use(session({
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.set('view engine', 'ejs');
 
