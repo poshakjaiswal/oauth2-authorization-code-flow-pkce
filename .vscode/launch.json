@@ -14,8 +14,17 @@
             "program": "${workspaceFolder}/app.js",
             "env": {
                 "NODE_ENV": "development",
-                "CLIENT_ID": "poshak1",
-                "CLIENT_SECRET": "poshak_secret1" 
+                "CLIENT_ID": "gtchat-hydra-dev",
+                "CLIENT_SECRET": "d9a39fa6-2ebb-469d-9c90-1e9e8832d2ec",
+                "OAUTH2_CLIENT_ID" : "gtchat-hydra-dev",
+                "OAUTH2_CLIENT_SECRET" : "d9a39fa6-2ebb-469d-9c90-1e9e8832d2ec",
+                "OAUTH2_REDIRECT_URI" : "https://f028-2405-201-a416-c01c-cc3f-65a6-d553-4afe.ngrok.io/uas/portal/auth/callback",
+                "OAUTH2_AUTH_URL" : "http://idp.gtchat.gr8hr3.com/uas/hydra/login",
+                "OAUTH2_TOKEN_URL" : "https://accounts.spotify.com/api/token",
+                "CANONICAL_URL" : "http://localhost:3000",
+                "OAUTH2_SCOPE" : "user-read-private user-read-email user-read-birthdate user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played",
+                "SESSION_SECRET" : "poshak_secret1",
+                "OAUTH2_ADMIN_URL" : "http://localhost:4444/admin",
             }
         }
     ]
