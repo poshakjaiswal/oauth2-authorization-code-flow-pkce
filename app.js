@@ -183,6 +183,7 @@ app.get('/get/the/code', (req, res) => {
    // http://localhost:4444/oauth2/auth?client_id=poshak&redirect_uri=http%3A%2F%2Flocalhost%3A1234%2Fcallbacks&response_type=code&scope=users.write+users.read+users.edit+users.delete+offline&state=4ZlTumSS1Oe3Vi6EtixWz0%2FYVl26HZJj1NGTu1nkffQ%3D
 
     let url = `${Authorization_Endpoint}?client_id=${Client_Id}&prompt=consent&redirect_uri=${Redirect_Uri}&response_type=code&scope=${Scope}&state=${State}&access_id=4d2b53544a4c6b467739714653514739635a356d614679347535376c4c464c5a6d77524a432f464b6e61453d`;
+    //let url = `${Authorization_Endpoint}?client_id=${Client_Id}&prompt=consent&redirect_uri=${Redirect_Uri}&response_type=code&scope=${Scope}&state=${State}&access_id=masterdemo1.gtchat.gr8hr3.com`;
 
     log.info(url);
 
